@@ -1,0 +1,19 @@
+Para instalar debes estár en una máquina con Linux, las direcciones de las carpetas pueden variar 
+segun nombre del servidor,
+entre servidores de webfactional solo cambia donde queda instalado el '~/.../django/contrib/auth/views.py'
+
+Primero situar la carpeta 'Install_crear/' y 'crear' en el ~,
+Dar los permisos a crear:
+
+webxx @ ~ $ chmod 755 crear 
+
+para instalar debes tipear:
+
+webxx @ ~ $ ./crear nombre_del_proyecto
+
+si no carga interfaz de usuario correctamente, ver si en el texto de crear en 
+linea 47 de 'crear' ( ...django/contrib/auth/views.py) corresponde a la dirección donde se ubica
+en webapps ( /nombre_del_proyecto_django/lib/python2.7/django... ).
+
+creado para trabajar desde user webplay
+D.

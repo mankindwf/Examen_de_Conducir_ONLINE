@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Todos los Exámenes" %}{% endblock %}
+
+{% block content %}
+<h1><strong>{% trans "Lista de Exámenes Aprobados por Alumnos" %}</strong></h1>
+    {% if sitting_list %}
+<hr>
+<h2>{% trans "Puedes buscar ingresando el rut del alumno en el cuadro de dialogo" %}</h2>
+<hr>
+			 <form action="" method="GET">
+				<td><input type="text" name="user_filter" /></td> 
+				<td><button type="submit" class="btn btn-default">{% trans "Buscar Alumno"%}</button></td>
+			  </form>
+<hr>
+
+		<table class="table table-bordered table-striped">
+
+		  <thead>
+			<tr>
+			  <th>{% trans "Usuario (RUT)" %}</th>
+			  <th>{% trans "Fecha Inscripción Alumno" %}</th>
+			  <th>{% trans "Fecha en que aprobó" %}</th>
+			  <th>{% trans "Numero de Examen Aprovado" %}</th>
+			  <!-- <th>{% trans "Porcentaje" %}(%)</th> -->
+			  <!-- <th>{% trans "Puntaje" %}</th> -->
+ 			  
+			</tr>
+		  </thead>
+
+		  <tbody>
+
+
+        {% for sitting in sitting_list %}
+		{% if sitting.check_if_passed %}
+			<tr>
+			  <td><h3>{{ sitting.user }}</h3></td>
+			  <td><strong><h3>{{ sitting.user.date_joined|date:'d N Y' }}</h3></strong></td>
+			 <!-- <td><strong><h3>{{ sitting.user.date_joined|date:'D, d N H:i:s e' }}</h3></strong></td> -->
+			  <td><h3>{{ sitting.end|date:'d N Y' }}</h3></td>
+			  <td><h3>{{ sitting.quiz }}</h3></td>
+
+			  <!-- <td>{{ sitting.get_percent_correct }}</td> -->
+			  <!-- <td><h3>{{ sitting.get_current_score }}</h3></td> -->
+			
+			  <!--	<a href="{% url 'quiz_marking_detail' pk=sitting.id %}">
+				  {% trans "Detalles" %}
+				</a> -->
+			</tr>
+		{% else %}
+		{% endif %}
+
+        {% endfor %}
+
+		  </tbody>
+
+		</table>
+    {% else %}
+        <h2>{% trans "No hay examenes aprobados" %}</h2>
+    {% endif %}
+<hr> 
+   {% if user.is_staff %}
+
+                                <a href="{% url 'administracion_vigos' %}">
+                                <button type="submit" class="btn btn-large btn-block btn-warning" >
+                                  <font color="black"> <h1>Volver a la Página de Administración</h1> </font> </button>
+                                </a>
+
+<hr>
+<hr>
+
+    {% endif %}
+
+{% endblock %}

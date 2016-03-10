@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Pagina de Administración de VIGO'S" %}{% endblock %}
+
+{% block content %}
+
+
+<h2 align=right>RUT: {{ user.username }}  <strong><a href="{% url 'logout' %}">   cerrar sesión   </a></strong></h2>
+{% load staticfiles %}
+
+<center><h1><font color="black">{% trans "Sistema de Administración : Práctica On-Line " %}</font><strong>VIGO´S</strong>  </center>
+<a href="http://www.vigos.cl"><img src="{% static "vigos.jpg" %}" alt="VIGO'S" align="right" /></a> </h1>
+
+<hr>
+
+<h2><strong>{% trans "Acceso de Administración:" %}</strong></h2>
+
+<hr>
+
+<h3>Selecciona una de las opciones de administración:</h3>
+
+<hr>
+<hr>
+
+<form method="get" action="{% url 'quiz_marking' %}">
+    <button type="submit" class="btn btn-large btn-block btn-warning"><h1>   Revisar Exámenes Aprobados por Alumnos.  </h1> </button>
+</form>
+
+<hr>
+<hr>
+
+
+<form method="get" action="/admin/auth/user/add/">
+    <button type="submit" class="btn btn-large btn-block btn-warning"><h1>   Agregar Alumno.  </h1> </button>
+</form>
+
+<hr>
+<hr>
+
+
+
+{% endblock %}

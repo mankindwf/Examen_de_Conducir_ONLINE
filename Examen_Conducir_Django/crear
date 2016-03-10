@@ -1,0 +1,64 @@
+#!/bin/bash
+# rsync using variables
+cd ~
+echo " "
+echo "Comenzando instalación de la web $1"
+echo " "
+echo "Copiando imagenes en ~/webapps/$1_static  ..."
+cp -r ~/Install_crear/static/* ~/webapps/$1_static/
+cd ~/webapps/$1_django/myproject/
+#python2.7 manage.py syncdb
+cp -r ~/Install_crear/myproject/* .
+cp ~/Install_crear/myproject/myproject/settings.py* myproject/
+echo "Copiando modelos de examenes ..."
+echo "Primera sync. de la Base de Datos ..."
+python2.7 manage.py syncdb
+./../apache2/bin/restart 
+echo ""
+echo "Entorno de Administracion Django... Listo"
+echo "Puedes acceder a la web ($1.webplay.cl/admin)"
+echo " "
+ #sed '/WORD/ a\
+ #Add this line after every line with WORD'
+ #sed -i '8i8 This is Line 8' 
+
+sed -i "38i \'quiz\',\n" myproject/settings.py >> myproject/settings.py
+sed -i "38i \'multichoice\',\n" myproject/settings.py >> myproject/settings.py
+sed -i "38i \'true_false\',\n"  myproject/settings.py >> myproject/settings.py
+sed -i "38i \'essay\',\n" myproject/settings.py >> myproject/settings.py
+ #easy_install-2.7 Pillow
+ #easy_install-2.7 django-model-utils
+echo "Instalando quiz ..."
+python2.7 manage.py sql quiz > nada
+echo "Instalando multichoice ..."
+python2.7 manage.py sql multichoice  > nada
+echo "Instalando true_false ..."
+python2.7 manage.py sql true_false > nada
+echo "Instalando essay ..."
+python2.7 manage.py sql essay > nada
+echo "Sync. Base de Datos..."
+python2.7 manage.py syncdb > nada
+echo "Importando nueva Base de Datos..."
+cp ~/db.sqlite3 .
+echo "Reconfigurando vistas de manejo de usuarios..."
+cp ~/Install_crear/views.py ~/webapps/$1_django/lib/python2.7/Django-1.7.7-py2.7.egg/django/contrib/auth/views.py
+python2.7 manage.py syncdb > nada
+rm nada
+echo " "
+echo " "
+echo "Instalacion completada en las dependencias:"
+echo " "
+echo "   ~/webapps/$1_django/"
+echo "   ~/webapps/$1_static/"
+echo " "
+echo "Las direcciones web asignadas por defecto son:"
+echo " "
+echo "   Web Principal:         $1.webplay.com/vigos/login"
+echo "   Web de administracion: $1.webplay.com/admin"
+echo " "
+echo "Plantillas web disponibles para editar en:"
+echo " "
+echo "   Templates: ~/webapps/$1_django/myproject/quiz/templates"
+echo " "
+./../apache2/bin/restart
+echo "Instalacion completada, espera 10 minutos antes de acceder a la web."

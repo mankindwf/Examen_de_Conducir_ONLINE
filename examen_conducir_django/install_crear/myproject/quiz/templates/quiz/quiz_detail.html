@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}
+{{ quiz.title }}
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<h2 align=right>RUT: {{ user.username }} <strong><a href="{% url 'logout' %}"> cerrar sesión </a></strong></h2>
+{% load staticfiles %}
+<center><h1><font color="black">{% trans "Práctica On-Line " %}<strong> VIGO'S </strong></font> </center> <a href="http://www.vigos.cl"> <img src="{% static "vigos.jpg" %}" alt="VIGO'S" align="right" /> </a> </h1>
+
+<hr>
+<h2>{{ quiz.title }}</h2>
+
+{% if quiz.single_attempt %}
+  <h1>{% trans " " %}.</h1>
+{% endif %}
+<p><h2>{{ quiz.description }}</h2></p>
+
+
+<br>
+<br>
+<br>
+<h1> {% trans " " %}  </h1>
+<h1> {% trans " " %}  </h1>
+<h1> {% trans " " %}  </h1>
+
+
+<p>
+
+
+<form method="get" action="{% url 'quiz_question' quiz_name=quiz.url %}">
+    <button type="submit" class="btn btn-large btn-block btn-warning"><h2>   Comenzar Examen  </h2> </button>
+</form>
+
+<!--
+
+ <a href="{% url 'quiz_question' quiz_name=quiz.url %}">
+	{% trans "   Comenzar Exámen   " %}
+  </a>
+
+-->
+
+</p> 
+
+{% else %}
+
+{% load staticfiles %}
+<center><h1><font color="black">{% trans "Práctica On-Line " %}<strong> VIGO'S </strong></font> </center> <a href="http://www.vigos.cl"> <img src="{% static "vigos.jpg" %}" alt="VIGO'S" align="right" /> </a> </h1>
+<hr>
+
+<h2>{% trans "Debes entrar a tu cuenta para realizar los exámenes." %}</h2>
+
+<form method="get" action="/vigos/login">
+    <button type="submit" class="btn btn-large btn-block btn-warning"><h2>   Ingresa a tu cuenta  </h2> </button>
+</form>
+
+{% endif %}
+{% endblock %}

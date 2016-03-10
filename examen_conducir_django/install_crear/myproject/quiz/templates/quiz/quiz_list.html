@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Practica On-Line VIGO'S: Examenes de Conducción Clase B" %}{% endblock %}
+
+
+
+
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<h2 align=right>RUT: {{ user.username }}  <strong><a href="{% url 'logout' %}">   cerrar sesión   </a></strong></h2>
+{% load staticfiles %}
+
+<center><h1><font color="black">{% trans "Práctica On-Line " %}</font><strong>VIGO´S</strong>  </center>
+<a href="http://www.vigos.cl"><img src="{% static "vigos.jpg" %}" alt="VIGO'S" align="right" /></a> </h1>
+
+
+    {% if user.is_staff %}
+<hr>
+<h3>Tienes Permisos de Administración.</h3>
+<hr>    
+
+				<a href="{% url 'administracion_vigos' %}">
+				<button type="submit" class="btn btn-large btn-block btn-warning" >
+				  <font color="black"> <h1>Ir a Página de Administración</h1> </font> </button>
+				</a>
+
+<hr>
+    {% endif %}
+
+
+<hr>
+	<a href="/quiz/">
+<h2>{% trans "Lista de Exámenes Clase B:" %}</h2>
+							</a>
+
+<h1>{% trans " " %}</h1>
+
+<h3>Hola, <strong> {{ user.first_name }} {{user.last_name}} </strong></h3>
+
+<h3>{% trans "Selecciona el examen que quieres realizar, cada examen contiene" %}<strong> 35 preguntas </strong>{% trans " , cuentas con " %}<strong> 45 minutos </strong>{% trans " para finalizar y pasar a las soluciones." %}</h3>
+<h1>{% trans " " %}</h1>
+<hr>
+
+    {% if quiz_list %}
+		<table class="table table-striped">
+<!--
+		  <thead>
+			<tr>
+			  <th><center><strong><h1><u>{% trans "Exámenes Clase B" %}</u></h1></strong></center></th>
+		  	
+			</tr>
+		  </thead> -->
+		  <tbody>
+
+        {% for quiz in quiz_list %}
+			
+			{% if quiz.check_if_passed %}
+			{% else %}	
+
+  			<tr>
+
+			  <td>
+				<center>
+				<a href="{% url 'quiz_start_page' slug=quiz.url %}">
+				<button type="submit" class="btn btn-large btn-block btn-warning" >
+				  <font color="black"> <h1>{{ quiz.title }}</h1> </font> </button>
+				</a>
+				</center>
+			  </td>
+
+<!--
+			  <td>
+				<a href="{% url 'quiz_start_page' slug=quiz.url %}">
+				   <h3>{% trans "Realizar Examen"%}</h3>
+				</a>
+			  </td>
+-->
+
+
+			{% endif %}
+
+        {% endfor %}
+		  </tbody>
+
+		</table>
+
+
+	{% else %}
+    {% endif %}
+
+{% else %}
+
+{% load staticfiles %}
+
+<center><h1><font color="black">{% trans "Práctica On-Line " %}</font><strong>VIGO´S</strong>  </center>
+<a href="http://www.vigos.cl"><img src="{% static "vigos.jpg" %}" alt="VIGO'S" align="right" /></a> </h1>
+<hr>
+<h2>{% trans "Debes entrar a tu cuenta para realizar los exámenes." %}</h2>
+<hr>
+
+
+{% if form.errors %}
+<p>Nombre de usuario o contraseña incorrecto/a, intenta nuevamente.</p>
+{% endif %}
+
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+{% csrf_token %}
+<table>
+<tr>
+    <h1><td>Usuario: </td></h1>
+    <h1><td>{{ form.username }}</td></h1>
+</tr>
+<tr>
+    <h1><td>Contraseña: </td></h1>
+    <h1><td>{{ form.password }}</td></h1>
+</tr>
+</table>
+<hr>
+
+<input type="submit" value="Entrar" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+
+{% endif %}
+
+
+
+{% endblock %}
